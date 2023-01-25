@@ -19,6 +19,6 @@ from django.urls import include, path
 
 urlpatterns = [
     # импорт правил из приложения posts
-    path('', include('posts.urls')),
+    path('', include('posts.urls', namespace='yatube')),
     path('admin/', admin.site.urls),
 ]
