@@ -1,9 +1,5 @@
-# Create your views here.
-from django.shortcuts import render
-
-
-from django.shortcuts import render
-from .models import Post
+from django.shortcuts import render, get_object_or_404
+from .models import Post, Group
 
 
 def index(request):
@@ -14,12 +10,13 @@ def index(request):
     return render(request, 'posts/index.html', context)
 
 
-# Страница со списком мороженого
 def group_posts(request, slug):
-    template = 'posts/group_list.html'
-    title = 'Здесь будет информация о группах проекта Yatube'
+    group = get_object_or_404(Group, slug=slug)
+    posts = Post.objects.filter(group=group).order_by('-pub_date')[:10]
+    title = get_object_or_404(Group, slug=slug)
     context = {
+        'group': group,
+        'posts': posts,
         'title': title,
-        'slug': slug,
     }
-    return render(request, template, context)
+    return render(request, 'posts/group_list.html', context)
